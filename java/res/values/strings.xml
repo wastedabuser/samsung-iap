@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">IAP Sample</string>
+    <string name="null_string"></string>
+    <string name="item_type">Item Type : </string>
+    <string name="item_list_is_empty">Item list is empty</string>
+    <string name="items_inbox_list_is_empty">Items inbox list is empty</string>
+    <string name="load_item_list">Load Item List</string>
+    <string name="load_items_inbox_list">Load Items Inbox List</string>
+    <string name="purchase_one_item">Purchase One Item</string>
+    <string name="item_list">Item List</string>
+    <string name="items_inbox_list">Items Inbox List</string>
+    <string name="in_app_purchase">In-app purchase</string>
+    <string name="msg_success_initialize_iap">SamsungAccount authentication and in-app billing initialization was successful.</string>
+    <string name="msg_iap_upgrade_is_requred">In-app Purchase upgrade is required.</string>
+    <string name="msg_failed_to_initialize_iap">Failed to initialize the in-app purchase.</string>
+    <string name="msg_failed_to_load_list_of_product">Failed to load list of product</string>
+    <string name="msg_failed_to_load_list_of_purchase">Failed to load list of purchase</string>
+    <string name="msg_iap_service_bind_failed">In-app Purchase Service Bind failed.</string>
+    <string name="dlg_title_payment_error">Payment error</string>
+    <string name="msg_payment_was_not_processed_successfully">The payment was not processed successfully.</string>
+    <string name="dlg_title_payment_success">Payment success</string>
+    <string name="dlg_msg_payment_success">The payment was successful</string>
+    <string name="dlg_title_payment_cancelled">Payment canceled</string>
+    <string name="dlg_msg_payment_cancelled">Payment has been canceled.</string>
+    <string name="dlg_title_samsungaccount_authentication">SamsungAccount authentication</string>
+    <string name="dlg_title_error">Error</string>
+    <string name="msg_authentication_has_been_cancelled">SamsungAccount authentication has been cancelled</string>
+    <string name="waiting_ing">Waiting...</string>
+    <string name="invalid_iap_package">IAP Application installed in your device is not valid!!</string>
+    <string name="invalid_activity_params">Please check IAP setting information.</string>
+    <string name="msg_invalid_purchase">Payment is not valid!!</string>
+    <string name="msg_iap_is_not_installed">IAP is not installed. Install?</string>
+</resources>

@@ -1,0 +1,5 @@
+<?xml version="1.0"?> 
+<componentPackage> 
+    <component id="InAppPurchase" 		class="com.eldhelm.samsung.iap.InAppPurchase"/>
+    <component id="IapPurchase" 		class="com.eldhelm.samsung.iap.data.IapPurchase"/>
+</componentPackage>
