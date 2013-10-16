@@ -23,7 +23,7 @@ echo Starting AIR Debug Launcher with screen size '%SCREEN_SIZE%'
 echo.
 echo (hint: edit 'Run.bat' to test on device or change screen size)
 echo.
-adl -screensize %SCREEN_SIZE% "%APP_XML%" "%APP_DIR%"
+adl -screensize %SCREEN_SIZE% "%APP_XML%" "%APP_DIR%" -extdir ane
 if errorlevel 1 goto end
 goto end
 

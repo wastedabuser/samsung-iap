@@ -79,9 +79,9 @@
     <hidden path="obj" />
   </hiddenPaths>
   <!-- Executed before build -->
-  <preBuildCommand>perl $(ProjectDir)\package_extension.pl "$(ProjectDir)" "$(ProjectName)" "$(FlexSDK)"</preBuildCommand>
+  <preBuildCommand />
   <!-- Executed after build -->
-  <postBuildCommand alwaysRun="False" />
+  <postBuildCommand alwaysRun="False">perl $(ProjectDir)\package_extension.pl "$(ProjectDir)" "$(ProjectName)" "$(FlexSDK)"</postBuildCommand>
   <!-- Other project options -->
   <options>
     <option showHiddenPaths="False" />

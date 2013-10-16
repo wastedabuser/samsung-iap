@@ -8,6 +8,7 @@ package com.eldhelm.samsung.iap.data {
 		public var mItemId:String; 
 		public var mItemName:String; 
 		public var mItemPrice:String; 
+		public var mItemPriceString:String;
 		public var mCurrencyUnit:String; 
 		public var mItemDesc:String; 
 		public var mItemImageUrl:String; 
@@ -15,6 +16,9 @@ package com.eldhelm.samsung.iap.data {
 		public var mReserved1:String; 
 		public var mReserved2:String; 
 		public var mType:String;
+		
+		public var mSubscriptionDurationUnit:String;
+		public var mSubscriptionDurationMultiplier:String;
 		
 		public function IapItem() {
 			

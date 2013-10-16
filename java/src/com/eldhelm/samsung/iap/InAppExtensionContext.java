@@ -1,5 +1,7 @@
 package com.eldhelm.samsung.iap;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,6 +26,7 @@ import com.adobe.fre.FREWrongThreadException;
 import com.eldhelm.samsung.iap.function.GetItemListFunction;
 import com.eldhelm.samsung.iap.function.GetItemsInboxFunction;
 import com.eldhelm.samsung.iap.function.InitFunction;
+import com.eldhelm.samsung.iap.function.InitializeExtensionFunction;
 import com.eldhelm.samsung.iap.function.PurchaseFunction;
 import com.eldhelm.samsung.iap.R;
 import com.sec.android.iap.IAPConnector;
@@ -37,15 +40,6 @@ public class InAppExtensionContext extends FREContext {
 	public IAPConnector mIAPConnector;
 	ServiceConnection mServiceConn;
 
-	InAppExtensionContext() {
-		super();
-
-		if (isInstalledIapPackage())
-			iapPackageInstalled();
-		else
-			iapPackageNotInstalled();
-	}
-
 	@Override
 	public void dispose() {
 		unbind();
@@ -54,6 +48,7 @@ public class InAppExtensionContext extends FREContext {
 	@Override
 	public Map<String, FREFunction> getFunctions() {
 		Map<String, FREFunction> functions = new HashMap<String, FREFunction>();
+		functions.put("initializeExtension", new InitializeExtensionFunction());
 		functions.put("init", new InitFunction());
 		functions.put("getItemList", new GetItemListFunction());
 		functions.put("getItemsInbox", new GetItemsInboxFunction());
@@ -68,7 +63,7 @@ public class InAppExtensionContext extends FREContext {
 					PackageManager.GET_META_DATA);
 			return true;
 		} catch (NameNotFoundException e) {
-			e.printStackTrace();
+			sendException(e);
 			return false;
 		}
 	}
@@ -94,11 +89,6 @@ public class InAppExtensionContext extends FREContext {
 		}
 	}
 
-	public void loginSuccessfull() {
-		bind();
-		dispatchStatusEventAsync("Login successfull", "ready");
-	}
-
 	public boolean isValidIAPPackage() {
 		boolean result = true;
 		try {
@@ -109,13 +99,15 @@ public class InAppExtensionContext extends FREContext {
 				result = false;
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			sendException(e);
 			result = false;
 		}
 		return result;
 	}
 
 	public void iapPackageNotInstalled() {
+		sendWarning("The com.sec.android.iap is not installed");
+
 		Intent intent = new Intent();
 		intent.setData(Uri
 				.parse("samsungapps://ProductDetail/com.sec.android.iap"));
@@ -180,12 +172,53 @@ public class InAppExtensionContext extends FREContext {
 		new AlertDialog.Builder(getActivity())
 				.setTitle(title)
 				.setMessage(message)
-				.show();
+				.setNegativeButton(android.R.string.cancel,
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int id) {
+								dialog.cancel();
+							}
+						}).show();
 	}
 
-	public void sendAsyncResult(FREObject obj) throws IllegalArgumentException, IllegalStateException, FREWrongThreadException{
-		setActionScriptData(obj);
-		dispatchStatusEventAsync("Result available", "result");
+	public void accountCertificationSuccessfull() {
+		bind();
+		dispatchStatusEventAsync("Login successfull", "ready");
 	}
-	
+
+	public void initSuccessfull() {
+		dispatchStatusEventAsync("Init successfull", "init");
+	}
+
+	public void paymentFailed() {
+		dispatchStatusEventAsync("Payment failed", "payment_failed");
+	}
+
+	public void sendAsyncResult(String code, FREObject obj)
+			throws IllegalArgumentException, IllegalStateException,
+			FREWrongThreadException {
+		setActionScriptData(obj);
+		dispatchStatusEventAsync(code, "result");
+	}
+
+	public void sendException(Exception ex) {
+		StringWriter sw = new StringWriter();
+		ex.printStackTrace(new PrintWriter(sw));
+		String err = sw.toString();
+		try {
+			setActionScriptData(FREObject.newObject(err));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		dispatchStatusEventAsync("Snap!", "error");
+	}
+
+	public void sendWarning(String msg) {
+		try {
+			setActionScriptData(FREObject.newObject(msg));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		dispatchStatusEventAsync("Warning", "error");
+	}
+
 }

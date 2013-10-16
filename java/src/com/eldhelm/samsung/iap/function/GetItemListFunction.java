@@ -25,8 +25,7 @@ public class GetItemListFunction implements FREFunction {
 		try {
 			itemList = FREArray.newArray(FREIapItem.CLASS_NAME, 0, false);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			frecontext.sendException(e);
 		}
 		
 		String _itemGroupId = null;
@@ -40,8 +39,7 @@ public class GetItemListFunction implements FREFunction {
 			_endNum = arg1[2].getAsInt();
 			_itemType = arg1[3].getAsString();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			frecontext.sendException(e);
 		}
 
 		try {
@@ -68,8 +66,7 @@ public class GetItemListFunction implements FREFunction {
 			}
 
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			frecontext.sendException(e);
 		}
 
 		return itemList;

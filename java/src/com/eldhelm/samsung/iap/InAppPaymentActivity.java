@@ -25,7 +25,7 @@ public class InAppPaymentActivity extends Activity {
 	protected void onActivityResult(int _requestCode, int _resultCode,
 			Intent _intent) {
 
-		if (_requestCode == 1) {
+		if (_requestCode == 1000) {
 			if (null == _intent) {
 				return;
 			}
@@ -44,16 +44,17 @@ public class InAppPaymentActivity extends Activity {
 				itemId = extras.getString("ITEM_ID");
 				purchaseData = extras.getString("RESULT_OBJECT");
 			} else {
-				InAppPurchase.context
+				InAppPurchase.context.paymentFailed();
+				/* InAppPurchase.context
 						.showDialog(
 								getString(R.string.dlg_title_payment_error),
-								getString(R.string.msg_payment_was_not_processed_successfully));
+								getString(R.string.msg_payment_was_not_processed_successfully)); */
 			}
 
 			if (RESULT_OK == _resultCode) {
 				
 				try {
-					InAppPurchase.context.sendAsyncResult(new FREIapPurchase(itemId, purchaseData, errorString));
+					InAppPurchase.context.sendAsyncResult("payment_completed", new FREIapPurchase(itemId, purchaseData, errorString));
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -65,9 +66,12 @@ public class InAppPaymentActivity extends Activity {
 						"-itemId : " + itemId + "\n-thirdPartyName : "
 								+ thirdPartyName + "\n-statusCode : "
 								+ statusCode);
+			} else {
+				InAppPurchase.context.paymentFailed();
 			}
 
 		}
 
 	}
+	
 }

@@ -22,8 +22,7 @@ public class PurchaseFunction implements FREFunction {
 			_itemGroupId = arg1[0].getAsString();
 			_itemId = arg1[1].getAsString();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			frecontext.sendException(e);
 		}
 
 		Intent startActivityIntent = new Intent(frecontext.getActivity(),

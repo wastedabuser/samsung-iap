@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <extension xmlns="http://ns.adobe.com/air/extension/3.7">
-    <id>com.eldhelm.samsung.iap</id>
+    <id>com.eldhelm.samsung.iap.InAppPurchase</id>
     <versionNumber>1.0.0</versionNumber>
     <platforms>
         <platform name="Android-ARM">

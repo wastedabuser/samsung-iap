@@ -20,14 +20,5 @@ public class FREIapItem extends FREObject {
 
 		setProperty("jsonData", FREObject.newObject(jsonData));
 	}
-
-	public FREIapItem(String className, String jsonData)
-			throws FRETypeMismatchException, FREInvalidObjectException,
-			FREASErrorException, FRENoSuchNameException,
-			FREWrongThreadException, IllegalStateException, FREReadOnlyException {
-		super(className);
-
-		setProperty("jsonData", FREObject.newObject(jsonData));
-	}
 	
 }

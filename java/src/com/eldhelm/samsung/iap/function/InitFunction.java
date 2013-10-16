@@ -12,14 +12,14 @@ public class InitFunction implements FREFunction {
 
 	@Override
 	public FREObject call(FREContext arg0, FREObject[] arg1) {
+		InAppExtensionContext frecontext = (InAppExtensionContext) arg0;
+		
 		try {
 			InAppExtensionContext.mMode = arg1[0].getAsInt();
 		}  catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			frecontext.sendException(e);
 		}
 		
-		final InAppExtensionContext frecontext = (InAppExtensionContext) arg0;
 		IAPConnector mIAPConnector = frecontext.mIAPConnector;
 
 		Bundle bundle;
@@ -29,16 +29,15 @@ public class InitFunction implements FREFunction {
 			if (null != bundle) {
 				int statusCode = bundle.getInt("STATUS_CODE");				
 				if (statusCode == 0) {
-					frecontext.dispatchStatusEventAsync("Init successfull", "init");
+					frecontext.initSuccessfull();
 				}
 				if (statusCode == -1001) {
 					frecontext.updatePakcage(bundle);
 				}
 			}
 
-		} catch (Exception e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+		} catch (Exception e) {
+			frecontext.sendException(e);
 		}
 
 		return null;

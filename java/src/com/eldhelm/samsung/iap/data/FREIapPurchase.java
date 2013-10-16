@@ -18,8 +18,8 @@ public class FREIapPurchase extends FREObject {
 			FREWrongThreadException, IllegalStateException, FREReadOnlyException {
 		super(CLASS_NAME);
 		
-		setProperty("itemId", FREObject.newObject(itemId));
 		setProperty("jsonData", FREObject.newObject(jsonData));
+		setProperty("itemId", FREObject.newObject(itemId));
 		setProperty("errorString", FREObject.newObject(errorString));
 	}
 

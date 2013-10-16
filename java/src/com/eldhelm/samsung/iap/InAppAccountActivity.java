@@ -22,7 +22,7 @@ public class InAppAccountActivity extends Activity {
 			Intent _intent) {
 		if (_requestCode == 1001) {
 			if (_resultCode == Activity.RESULT_OK) {
-				InAppPurchase.context.loginSuccessfull();
+				InAppPurchase.context.accountCertificationSuccessfull();
 			}
 		}
 	}

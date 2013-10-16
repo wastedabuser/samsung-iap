@@ -2,12 +2,23 @@ use strict;
 
 my ($projectPath, $name, $flexSdkPath) = @ARGV;
 
-my $swc = "../build/$name.swc";
-my $ane = "../build/com.eldhelm.samsung.iap.ane";
+my $swc = "$projectPath\\..\\build\\$name.swc";
+my $ane = "$projectPath\\..\\build\\com.eldhelm.samsung.iap.InAppPurchase.ane";
 
 print "Cleaning up build directory\n";
 unlink $swc;
 unlink $ane;
+
+# ===========================================================================================
+# Well, this is configured for my enviroment so i can push the build to my production project
+# Change it if you are using another (but similar) setup
+# ===========================================================================================
+my $productionPath;
+$productionPath = do "production_path.pl" if -f "production_path.pl";
+
+opendir DIR, "../platform";
+my @platfroms = grep /^[^\.]/, readdir DIR;
+close DIR;
 
 my @commands = (
 
@@ -25,20 +36,22 @@ my @commands = (
 		library.swf
 		-o"../platform/$_"
 		-y
-	~, "default", "Android"),
+	~, @platfroms),
 
 	qq~"$flexSdkPath/bin/adt" 
 		-package
 		-target ane $ane extension.xml 
-		-swc $swc 
-		-platform Android-ARM -C ../platform/Android . 
-		-platform default -C ../platform/default .
-	~,
+		-swc $swc
+	~.join(" ", map qq~-platform $_ -C ../platform/$_ .~, @platfroms),
 
+	-d $productionPath ? (
+		qq~copy "$swc" "$productionPath/lib" /y~,
+		qq~copy "$ane" "$productionPath/ane" /y~,
+	) : ()
 );
 
 foreach (@commands) {
-	print $_;
+	print "$_\n";
 	s/[\n\r]//g;
 	s/[\t]/ /g;
 	print `$_`;

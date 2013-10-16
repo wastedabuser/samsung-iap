@@ -23,8 +23,7 @@ public class GetItemsInboxFunction implements FREFunction {
 		try {
 			itemList = FREArray.newArray(FREIapPurchasedItem.CLASS_NAME, 0, false);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			frecontext.sendException(e);
 		}
 		
 		String _itemGroupId = null;
@@ -40,8 +39,7 @@ public class GetItemsInboxFunction implements FREFunction {
 			_startDate = arg1[3].getAsString();
 			_endDate = arg1[4].getAsString();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			frecontext.sendException(e);
 		}
 
 		try {
@@ -67,8 +65,7 @@ public class GetItemsInboxFunction implements FREFunction {
 			}
 
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			frecontext.sendException(e);
 		}
 
 		return itemList;
