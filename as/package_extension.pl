@@ -21,7 +21,7 @@ my @commands = (
 
 	map (qq~"C:/Program Files/7-Zip/7z" 
 		e 
-		bin/$name.swc
+		$swc
 		library.swf
 		-o"../platform/$_"
 		-y

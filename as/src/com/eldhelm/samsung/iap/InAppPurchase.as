@@ -10,6 +10,11 @@ package com.eldhelm.samsung.iap {
 	 */
 	public class InAppPurchase extends EventDispatcher {
 		
+		public static const CONSUMABLE:String = "00";
+		public static const NON_CONSUMABLE:String = "01";
+		public static const SUBSCRIPTION:String = "02";
+		public static const ALL:String = "10";
+		
 		private var extContext:ExtensionContext;
 		
 		public function InAppPurchase() {
@@ -37,12 +42,12 @@ package com.eldhelm.samsung.iap {
 		/**
 		 * Returns a list of items available for purchase
 		 * @param	itemGroupId
-		 * @param	startNum
-		 * @param	endNum
-		 * @param	itemType
+		 * @param	startNum defaults to 0
+		 * @param	endNum defaults to 99
+		 * @param	itemType defaults to ALL
 		 * @return
 		 */
-		public function getItemList(itemGroupId:String, startNum:int, endNum:int, itemType:String):Vector.<IapItem> {
+		public function getItemList(itemGroupId:String, startNum:int = 0, endNum:int = 99, itemType:String = ALL):Vector.<IapItem> {
 			return (Vector.<IapItem>)(extContext.call("getItemList", itemGroupId, startNum, endNum, itemType));
 		}
 		
