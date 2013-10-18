@@ -122,8 +122,10 @@ package com.eldhelm.samsung.iap {
 		 * Disposes the iap and related objects
 		 */
 		public function dispose():void {
-			extContext.dispose();
-			extContext = null;
+			if (extContext != null) {
+				extContext.dispose();
+				extContext = null;
+			}
 			inited = false;
 		}
 		
