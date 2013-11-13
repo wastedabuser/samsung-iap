@@ -10,6 +10,8 @@ public class InAppAccountActivity extends Activity {
 	@Override
     public void onCreate(Bundle savedInstanceState) 
     {
+		super.onCreate(savedInstanceState);
+		
 		ComponentName com = new ComponentName("com.sec.android.iap",
 				"com.sec.android.iap.activity.AccountActivity");
 		Intent intent = new Intent();
@@ -20,7 +22,8 @@ public class InAppAccountActivity extends Activity {
     @Override
 	protected void onActivityResult(int _requestCode, int _resultCode,
 			Intent _intent) {
-		if (_requestCode == 1001) {
+    	InAppPurchase.context.sendWarning("Received code " + _requestCode);
+    	if (_requestCode == 1001) {
 			if (_resultCode == Activity.RESULT_OK) {
 				InAppPurchase.context.accountCertificationSuccessfull();
 			}

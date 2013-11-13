@@ -80,8 +80,8 @@
 	http://developer.android.com/guide/topics/manifest/manifest-intro.html
 	-->
 	
-  <extensions>
+  <!--<extensions>
     <extensionID>com.eldhelm.samsung.iap.InAppPurchase</extensionID>
-  </extensions>
+  </extensions>-->
 	
 </application>

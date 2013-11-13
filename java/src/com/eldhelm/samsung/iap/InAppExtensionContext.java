@@ -83,9 +83,15 @@ public class InAppExtensionContext extends FREContext {
 								}
 							}).show();
 		} else {
-			Intent startActivityIntent = new Intent(getActivity(),
-					InAppAccountActivity.class);
-			getActivity().startActivity(startActivityIntent);
+			sendWarning("Loging in");
+
+			try {
+				Intent startActivityIntent = new Intent(getActivity()
+						.getApplicationContext(), InAppAccountActivity.class);
+				getActivity().startActivity(startActivityIntent);
+			} catch (Exception e) {
+				sendException(e);
+			}
 		}
 	}
 
@@ -213,12 +219,7 @@ public class InAppExtensionContext extends FREContext {
 	}
 
 	public void sendWarning(String msg) {
-		try {
-			setActionScriptData(FREObject.newObject(msg));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		dispatchStatusEventAsync("Warning", "error");
+		dispatchStatusEventAsync(msg, "warning");
 	}
 
 }

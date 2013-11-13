@@ -11,6 +11,8 @@ public class InitializeExtensionFunction implements FREFunction {
 	public FREObject call(FREContext arg0, FREObject[] arg1) {
 		InAppExtensionContext frecontext = (InAppExtensionContext) arg0;
 		
+		frecontext.sendWarning("Initializing");
+		
 		if (frecontext.isInstalledIapPackage())
 			frecontext.iapPackageInstalled();
 		else

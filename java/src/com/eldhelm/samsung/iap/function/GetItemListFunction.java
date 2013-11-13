@@ -20,19 +20,19 @@ public class GetItemListFunction implements FREFunction {
 	public FREObject call(FREContext arg0, FREObject[] arg1) {
 		InAppExtensionContext frecontext = (InAppExtensionContext) arg0;
 		IAPConnector mIAPConnector = frecontext.mIAPConnector;
-		
+
 		FREArray itemList = null;
 		try {
 			itemList = FREArray.newArray(FREIapItem.CLASS_NAME, 0, false);
 		} catch (Exception e) {
 			frecontext.sendException(e);
 		}
-		
+
 		String _itemGroupId = null;
 		int _startNum = 0;
 		int _endNum = 0;
 		String _itemType = null;
-		
+
 		try {
 			_itemGroupId = arg1[0].getAsString();
 			_startNum = arg1[1].getAsInt();
@@ -43,10 +43,10 @@ public class GetItemListFunction implements FREFunction {
 		}
 
 		try {
-			Bundle bundle = mIAPConnector.getItemList(
-					InAppExtensionContext.mMode, frecontext.getActivity()
-							.getPackageName(), _itemGroupId, _startNum,
-					_endNum, _itemType);
+			int mode = InAppExtensionContext.mMode;
+			String packageName = frecontext.getActivity().getPackageName();
+			Bundle bundle = mIAPConnector.getItemList(mode, packageName,
+					_itemGroupId, _startNum, _endNum, _itemType);
 
 			if (null != bundle) {
 				int statusCode = bundle.getInt("STATUS_CODE");
@@ -54,7 +54,7 @@ public class GetItemListFunction implements FREFunction {
 
 					ArrayList<String> arrayList = bundle
 							.getStringArrayList("RESULT_LIST");
-					
+
 					int i = 0;
 					for (String itemString : arrayList) {
 						itemList.setObjectAt(i++, new FREIapItem(itemString));

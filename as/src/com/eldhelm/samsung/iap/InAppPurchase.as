@@ -16,27 +16,38 @@ package com.eldhelm.samsung.iap {
 		public static const ALL:String = 			"10";
 		
 		private var extContext:ExtensionContext;
+		private var ready:Boolean;
 		private var inited:Boolean;
 		private var _callbackMethod:String;
 		private var _callbackArgs:Array;
+		private var defaultMode:int;
 		
-		public function InAppPurchase() {
-			extContext = ExtensionContext.createExtensionContext("com.eldhelm.samsung.iap", "");
+		public function InAppPurchase(mode:int = 0) {
+			defaultMode = mode;
+			extContext = ExtensionContext.createExtensionContext("com.eldhelm.samsung.iap.InAppPurchase", "");
 			if (extContext != null) {
+				trace("IAP: context created");
 				extContext.call("initializeExtension");
 				extContext.addEventListener(StatusEvent.STATUS, onStatus);				
 			} else {
-				inited = true;
+				trace("IAP: context creation failed");
 			}
 		}
 		
 		private function onStatus(event:StatusEvent):void {
 			if (event.level == "result") {
+				trace("IAP: result");
+				
 				dispatchEvent(new IapEvent("iapEvent_" + event.code, extContext.actionScriptData));
 				extContext.actionScriptData = null;
 				return;
 				
 			} else if (event.level == "ready") {
+				trace("IAP: ready");
+				ready = true;
+				
+			} else if (event.level == "init") {
+				trace("IAP: inited");
 				inited = true;
 				
 				if (_callbackMethod != null) {
@@ -45,9 +56,14 @@ package com.eldhelm.samsung.iap {
 					_callbackArgs.length = 0;
 					_callbackArgs = null;
 				}
+				
 			} else if (event.level == "error") {
 				trace("================ Extension error ===================");
 				trace(extContext.actionScriptData);
+				return;
+				
+			} else if (event.level == "warning") {
+				trace("IAP Extension: " + event.code);
 				return;
 			}
 			
@@ -71,7 +87,10 @@ package com.eldhelm.samsung.iap {
 		 */
 		public function init(mode:int = 0):void {
 			if (!extContext) return;
+			if (!ready) throw new Error("The IAP is not ready");
+			if (!mode) mode = defaultMode;
 			
+			trace("IAP: execute init " + mode);
 			extContext.call("init", mode);
 		}
 		
@@ -85,7 +104,9 @@ package com.eldhelm.samsung.iap {
 		 */
 		public function getItemList(itemGroupId:String, startNum:int = 0, endNum:int = 99, itemType:String = ALL):Vector.<IapItem> {
 			if (!extContext) return null;
+			if (!ready) throw new Error("The IAP is not ready");
 			
+			trace("IAP: execute getItemList");
 			return (Vector.<IapItem>)(extContext.call("getItemList", itemGroupId, startNum, endNum, itemType));
 		}
 		
@@ -101,8 +122,10 @@ package com.eldhelm.samsung.iap {
 		 */
 		public function getItemsInbox(itemGroupId:String, startNum:int, endNum:int, startDate:String, endDate:String):Vector.<IapPurchasedItem> {
 			if (!extContext) return null;
-			
+			if (!ready) throw new Error("The IAP is not ready");
 			if (!inited) throw new Error("The IAP is not inited");
+			
+			trace("IAP: execute getItemsInbox");
 			return (Vector.<IapPurchasedItem>)(extContext.call("getItemsInbox", itemGroupId, startNum, endNum, startDate, endDate));
 		}
 		
@@ -113,8 +136,10 @@ package com.eldhelm.samsung.iap {
 		 */
 		public function purchase(itemGroupId:String, itemId:String):void {
 			if (!extContext) return;
-			
+			if (!ready) throw new Error("The IAP is not ready");
 			if (!checkWhetherInited("purchase", [itemGroupId, itemId])) return;
+			
+			trace("IAP: execute purchase");
 			extContext.call("purchase", itemGroupId, itemId);
 		}
 		
@@ -126,6 +151,7 @@ package com.eldhelm.samsung.iap {
 				extContext.dispose();
 				extContext = null;
 			}
+			ready = false;
 			inited = false;
 		}
 		

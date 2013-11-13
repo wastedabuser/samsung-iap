@@ -1,10 +1,20 @@
-Find the ready to use SWC and ANE inside the /build folder.
+How to use:
 
-Warning, this extension is under developemnt and it is not fully tested!
+Find the ready to use SWC and ANE inside the /build folder.
+Please make sure you add to your manifestAdditions in application.xml the following nodes:
+
+<application android:enabled="true">
+	<activity android:name="com.eldhelm.samsung.iap.InAppAccountActivity"></activity>
+	<activity android:name="com.eldhelm.samsung.iap.InAppPaymentActivity"></activity>
+</application>
+
+What's inside:
 
 The /as folder contains a FlashDevelop project for developing the action script part of the extension and may be creating a bench (in the future).
 The /java folder contains a ADT (Eclipse) project with the native java source code.
 The /platform folder conatins all the files that are needed to package the extension.
+
+Building:
 
 To build the stuff yourself using the current setup you need: ADT, FlashDevelop and Perl 
 1) Open the Eclipse project and export the jar file into the /platfrom/Android folder

@@ -11,6 +11,7 @@ public class InAppPaymentActivity extends Activity {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
 
 		ComponentName com = new ComponentName("com.sec.android.iap",
 				"com.sec.android.iap.activity.PaymentMethodListActivity");
@@ -45,16 +46,20 @@ public class InAppPaymentActivity extends Activity {
 				purchaseData = extras.getString("RESULT_OBJECT");
 			} else {
 				InAppPurchase.context.paymentFailed();
-				/* InAppPurchase.context
-						.showDialog(
-								getString(R.string.dlg_title_payment_error),
-								getString(R.string.msg_payment_was_not_processed_successfully)); */
+				/*
+				 * InAppPurchase.context .showDialog(
+				 * getString(R.string.dlg_title_payment_error),
+				 * getString(R.string
+				 * .msg_payment_was_not_processed_successfully));
+				 */
 			}
 
 			if (RESULT_OK == _resultCode) {
-				
+
 				try {
-					InAppPurchase.context.sendAsyncResult("payment_completed", new FREIapPurchase(itemId, purchaseData, errorString));
+					InAppPurchase.context.sendAsyncResult("payment_completed",
+							new FREIapPurchase(itemId, purchaseData,
+									errorString));
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -73,5 +78,5 @@ public class InAppPaymentActivity extends Activity {
 		}
 
 	}
-	
+
 }
