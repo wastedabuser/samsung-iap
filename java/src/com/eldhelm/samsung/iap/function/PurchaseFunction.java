@@ -25,17 +25,21 @@ public class PurchaseFunction implements FREFunction {
 			frecontext.sendException(e);
 		}
 
-		Intent startActivityIntent = new Intent(frecontext.getActivity(),
-				InAppPaymentActivity.class);
+		try {
+			Intent startActivityIntent = new Intent(frecontext.getActivity(),
+					InAppPaymentActivity.class);
 
-		Bundle purchaseBundle = new Bundle();
-		purchaseBundle.putString("THIRD_PARTY_NAME", frecontext.getActivity()
-				.getPackageName());
-		purchaseBundle.putString("ITEM_GROUP_ID", _itemGroupId);
-		purchaseBundle.putString("ITEM_ID", _itemId);
-		startActivityIntent.putExtras(purchaseBundle);
+			Bundle purchaseBundle = new Bundle();
+			purchaseBundle.putString("THIRD_PARTY_NAME", frecontext
+					.getActivity().getPackageName());
+			purchaseBundle.putString("ITEM_GROUP_ID", _itemGroupId);
+			purchaseBundle.putString("ITEM_ID", _itemId);
+			startActivityIntent.putExtras(purchaseBundle);
 
-		frecontext.getActivity().startActivity(startActivityIntent);
+			frecontext.getActivity().startActivity(startActivityIntent);
+		} catch (Exception e) {
+			frecontext.sendException(e);
+		}
 
 		return null;
 	}

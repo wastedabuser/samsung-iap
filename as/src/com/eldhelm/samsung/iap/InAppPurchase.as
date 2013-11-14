@@ -35,6 +35,8 @@ package com.eldhelm.samsung.iap {
 		}
 		
 		private function onStatus(event:StatusEvent):void {
+			var errorObj:Object;
+			
 			if (event.level == "result") {
 				trace("IAP: result");
 				
@@ -57,17 +59,22 @@ package com.eldhelm.samsung.iap {
 					_callbackArgs = null;
 				}
 				
-			} else if (event.level == "error") {
-				trace("================ Extension error ===================");
+			} else if (event.level == "exception") {
+				trace("================ Extension exception ===================");
 				trace(extContext.actionScriptData);
 				return;
 				
 			} else if (event.level == "warning") {
 				trace("IAP Extension: " + event.code);
 				return;
+				
+			} else if (event.level == "error") {
+				trace("================ Extension error ===================");
+				trace("IAP Extension: " + event.code);
+				errorObj = { code: event.code };
 			}
 			
-			dispatchEvent(new IapEvent("iapEvent_" + event.level));
+			dispatchEvent(new IapEvent("iapEvent_" + event.level, errorObj));
 		}
 		
 		private function checkWhetherInited(method:String, args:Array):Boolean {

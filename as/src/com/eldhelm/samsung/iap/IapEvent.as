@@ -17,6 +17,12 @@ package com.eldhelm.samsung.iap {
 		public static const ON_INIT:String = "iapEvent_init";
 		
 		/**
+		 * Fires when an error occures while interacting with the api
+		 * Please refer to the Samsung IAP Dev guide for the correspsonging error code or erro message
+		 */
+		public static const ON_ERROR:String = "iapEvent_error";
+		
+		/**
 		 * Fires when a purchase has failed 
 		 */
 		public static const ON_PURCHASE_FAILED:String = "iapEvent_payment_failed";

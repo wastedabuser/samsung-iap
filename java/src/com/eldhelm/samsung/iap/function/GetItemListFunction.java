@@ -50,8 +50,8 @@ public class GetItemListFunction implements FREFunction {
 
 			if (null != bundle) {
 				int statusCode = bundle.getInt("STATUS_CODE");
-				if (statusCode == 0) {
 
+				if (statusCode == 0) {
 					ArrayList<String> arrayList = bundle
 							.getStringArrayList("RESULT_LIST");
 
@@ -59,10 +59,14 @@ public class GetItemListFunction implements FREFunction {
 					for (String itemString : arrayList) {
 						itemList.setObjectAt(i++, new FREIapItem(itemString));
 					}
-				}
-				if (statusCode == -1001) {
+				} else if (statusCode == -1001) {
 					frecontext.updatePakcage(bundle);
+				} else {
+					frecontext.sendError("getItemList " + statusCode);
 				}
+
+			} else {
+				frecontext.sendError("getItemList bundle is null");
 			}
 
 		} catch (Exception e) {

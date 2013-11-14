@@ -10,7 +10,7 @@ Please make sure you add to your manifestAdditions in application.xml the follow
 
 What's inside:
 
-The /as folder contains a FlashDevelop project for developing the action script part of the extension and may be creating a bench (in the future).
+The /as folder contains a FlashDevelop project for developing the action script part of the extension and may be creating a testbench (in the future).
 The /java folder contains a ADT (Eclipse) project with the native java source code.
 The /platform folder conatins all the files that are needed to package the extension.
 

@@ -8,6 +8,7 @@ import java.util.Map;
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
@@ -129,6 +130,7 @@ public class InAppExtensionContext extends FREContext {
 	}
 
 	public void bind() {
+		sendWarning("binding");
 		mServiceConn = new ServiceConnection() {
 			@Override
 			public void onServiceDisconnected(ComponentName name) {
@@ -137,9 +139,23 @@ public class InAppExtensionContext extends FREContext {
 
 			@Override
 			public void onServiceConnected(ComponentName name, IBinder service) {
-				mIAPConnector = IAPConnector.Stub.asInterface(service);
+				try {
+					mIAPConnector = IAPConnector.Stub.asInterface(service);
+					onBind();
+				} catch (Exception e) {
+					sendException(e);
+				}
 			}
 		};
+
+		try {
+			Intent serviceIntent = new Intent(
+					"com.sec.android.iap.service.iapService");
+			getActivity().bindService(serviceIntent, mServiceConn,
+					Context.BIND_AUTO_CREATE);
+		} catch (Exception e) {
+			sendException(e);
+		}
 	}
 
 	public void unbind() {
@@ -188,6 +204,9 @@ public class InAppExtensionContext extends FREContext {
 
 	public void accountCertificationSuccessfull() {
 		bind();
+	}
+
+	public void onBind() {
 		dispatchStatusEventAsync("Login successfull", "ready");
 	}
 
@@ -215,11 +234,15 @@ public class InAppExtensionContext extends FREContext {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		dispatchStatusEventAsync("Snap!", "error");
+		dispatchStatusEventAsync("Snap!", "exception");
 	}
 
 	public void sendWarning(String msg) {
 		dispatchStatusEventAsync(msg, "warning");
+	}
+	
+	public void sendError(String msg) {
+		dispatchStatusEventAsync(msg, "error");
 	}
 
 }
