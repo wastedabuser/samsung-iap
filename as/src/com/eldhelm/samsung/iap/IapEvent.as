@@ -23,6 +23,12 @@ package com.eldhelm.samsung.iap {
 		public static const ON_ERROR:String = "iapEvent_error";
 		
 		/**
+		 * Fires when an exception occures (and it is catched) in the native code
+		 * This might mean that the device is not a Samsung one or the API is not supported
+		 */
+		public static const ON_EXCEPTION:String = "iapEvent_exception";
+		
+		/**
 		 * Fires when a purchase has failed 
 		 */
 		public static const ON_PURCHASE_FAILED:String = "iapEvent_payment_failed";

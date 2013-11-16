@@ -15,9 +15,11 @@ package com.eldhelm.samsung.iap {
 		public static const SUBSCRIPTION:String = 	"02";
 		public static const ALL:String = 			"10";
 		
+		public var created:Boolean;
+		public var ready:Boolean;
+		public var inited:Boolean;
+		
 		private var extContext:ExtensionContext;
-		private var ready:Boolean;
-		private var inited:Boolean;
 		private var _callbackMethod:String;
 		private var _callbackArgs:Array;
 		private var defaultMode:int;
@@ -29,6 +31,7 @@ package com.eldhelm.samsung.iap {
 				trace("IAP: context created");
 				extContext.call("initializeExtension");
 				extContext.addEventListener(StatusEvent.STATUS, onStatus);				
+				created = true;
 			} else {
 				trace("IAP: context creation failed");
 			}
@@ -62,7 +65,7 @@ package com.eldhelm.samsung.iap {
 			} else if (event.level == "exception") {
 				trace("================ Extension exception ===================");
 				trace(extContext.actionScriptData);
-				return;
+				errorObj = { code: event.code, data: extContext.actionScriptData };
 				
 			} else if (event.level == "warning") {
 				trace("IAP Extension: " + event.code);
@@ -160,6 +163,7 @@ package com.eldhelm.samsung.iap {
 			}
 			ready = false;
 			inited = false;
+			created = false;
 		}
 		
 	}

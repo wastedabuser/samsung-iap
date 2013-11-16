@@ -115,18 +115,22 @@ public class InAppExtensionContext extends FREContext {
 	public void iapPackageNotInstalled() {
 		sendWarning("The com.sec.android.iap is not installed");
 
-		Intent intent = new Intent();
-		intent.setData(Uri
-				.parse("samsungapps://ProductDetail/com.sec.android.iap"));
-		if (Build.VERSION.SDK_INT >= 12) {
-			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-					| Intent.FLAG_ACTIVITY_CLEAR_TOP
-					| FLAG_INCLUDE_STOPPED_PACKAGES);
-		} else {
-			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-					| Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		try {
+			Intent intent = new Intent();
+			intent.setData(Uri
+					.parse("samsungapps://ProductDetail/com.sec.android.iap"));
+			if (Build.VERSION.SDK_INT >= 12) {
+				intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+						| Intent.FLAG_ACTIVITY_CLEAR_TOP
+						| FLAG_INCLUDE_STOPPED_PACKAGES);
+			} else {
+				intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+						| Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			}
+			getActivity().startActivity(intent);
+		} catch (Exception e) {
+			sendException(e);
 		}
-		getActivity().startActivity(intent);
 	}
 
 	public void bind() {
