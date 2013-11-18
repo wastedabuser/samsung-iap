@@ -34,9 +34,14 @@ package com.eldhelm.samsung.iap {
 		public static const ON_PURCHASE_FAILED:String = "iapEvent_payment_failed";
 		
 		/**
+		 * Fires when a purchase has been canceled
+		 */
+		public static const ON_PURCHASE_CANCELED:String = "iapEvent_payment_canceled";
+		
+		/**
 		 * Fires when a purchase has completed
 		 * Please note that this doesn't mean the purchase is successfull
-		 * You should check the sharedObject whether it is IapPurchase and it has no errorString
+		 * You should check the sharedObject whether it is IapPurchase and it has an errorString and teh status code is 0!
 		 */
 		public static const ON_PURCHASE_COMPLETED:String = "iapEvent_payment_completed";
 		

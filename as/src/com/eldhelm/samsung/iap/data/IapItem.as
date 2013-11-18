@@ -21,7 +21,7 @@ package com.eldhelm.samsung.iap.data {
 		public var mSubscriptionDurationMultiplier:String;
 		
 		public function IapItem() {
-			
+			super();
 		}
 		
 	}

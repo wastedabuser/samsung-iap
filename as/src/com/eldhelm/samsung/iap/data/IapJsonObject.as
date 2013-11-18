@@ -13,7 +13,13 @@ package com.eldhelm.samsung.iap.data {
 		}
 		
 		public function set jsonData(jsn:String):void {
-			_jsonData = jsn;
+			try {
+				_jsonData = jsn;
+			} catch (e:Error) {
+				trace("=========== Error parsing json ===========");
+				trace(e);
+				trace(jsn);
+			}
 			data = JSON.parse(jsn);
 			for (var i:String in data) {
 				if (hasOwnProperty(i)) this[i] = data[i];

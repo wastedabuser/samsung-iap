@@ -7,10 +7,11 @@ package com.eldhelm.samsung.iap.data {
 		
 		public var itemId:String;
 		public var errorString:String;		
+		public var statusCode:int;		
 		public var mVerifyUrl:String;
 		
 		public function IapPurchase() {
-			
+			super();
 		}
 		
 	}

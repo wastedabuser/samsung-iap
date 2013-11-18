@@ -222,6 +222,10 @@ public class InAppExtensionContext extends FREContext {
 		dispatchStatusEventAsync("Payment failed", "payment_failed");
 	}
 
+	public void paymentCanceled() {
+		dispatchStatusEventAsync("Payment canceled", "payment_canceled");
+	}
+	
 	public void sendAsyncResult(String code, FREObject obj)
 			throws IllegalArgumentException, IllegalStateException,
 			FREWrongThreadException {

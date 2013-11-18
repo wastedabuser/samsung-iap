@@ -22,7 +22,7 @@ public class InAppAccountActivity extends Activity {
     @Override
 	protected void onActivityResult(int _requestCode, int _resultCode,
 			Intent _intent) {
-    	InAppPurchase.context.sendWarning("Received code " + _requestCode);
+    	InAppPurchase.context.sendWarning("Received requestCode: " + _requestCode + " resultCode: " + _resultCode);
     	if (_requestCode == 1001) {
 			if (_resultCode == Activity.RESULT_OK) {
 				InAppPurchase.context.accountCertificationSuccessfull();

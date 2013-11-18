@@ -12,7 +12,7 @@ package com.eldhelm.samsung.iap.data {
 		public var mSubscriptionEndDatedDatedDate:String;
 		
 		public function IapPurchasedItem() {
-			
+			super();
 		}
 		
 	}

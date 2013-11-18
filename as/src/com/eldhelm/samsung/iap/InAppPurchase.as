@@ -112,7 +112,7 @@ package com.eldhelm.samsung.iap {
 		 * @param	itemType defaults to ALL
 		 * @return
 		 */
-		public function getItemList(itemGroupId:String, startNum:int = 0, endNum:int = 99, itemType:String = ALL):Vector.<IapItem> {
+		public function getItemList(itemGroupId:String, startNum:int = 1, endNum:int = 99, itemType:String = ALL):Vector.<IapItem> {
 			if (!extContext) return null;
 			if (!ready) throw new Error("The IAP is not ready");
 			

@@ -16,7 +16,7 @@ public class FREIapPurchasedItem extends FREObject {
 			throws FRETypeMismatchException, FREInvalidObjectException,
 			FREASErrorException, FRENoSuchNameException,
 			FREWrongThreadException, IllegalStateException, FREReadOnlyException  {
-		super(CLASS_NAME);
+		super(CLASS_NAME, null);
 		
 		setProperty("jsonData", FREObject.newObject(jsonData));
 	}

@@ -1,4 +1,6 @@
 package {
+	import com.eldhelm.samsung.iap.data.IapItem;
+	import com.eldhelm.samsung.iap.data.IapJsonObject;
 	import com.eldhelm.samsung.iap.IapEvent;
 	import com.eldhelm.samsung.iap.InAppPurchase;
 	import flash.desktop.NativeApplication;
@@ -24,6 +26,14 @@ package {
 			
 			// touch or gesture?
 			Multitouch.inputMode = MultitouchInputMode.TOUCH_POINT;
+			
+			//var ijo:IapJsonObject = new IapJsonObject('{"kiro":"a"}');
+			//trace(ijo.data);
+			//trace(ijo.data.kiro);
+			//
+			//ijo = new IapItem('{"kiro":"b"}');
+			//trace(ijo.data);
+			//trace(ijo.data.kiro);
 			
 			// samsung iap test
 			iap = new InAppPurchase;

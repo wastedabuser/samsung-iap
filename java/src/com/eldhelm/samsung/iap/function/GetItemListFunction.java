@@ -45,6 +45,11 @@ public class GetItemListFunction implements FREFunction {
 		try {
 			int mode = InAppExtensionContext.mMode;
 			String packageName = frecontext.getActivity().getPackageName();
+
+			frecontext.sendWarning("Calling getItemList:" + mode + ";"
+					+ packageName + ";" + _itemGroupId + ";" + _startNum + ";"
+					+ _endNum + ";" + _itemType);
+
 			Bundle bundle = mIAPConnector.getItemList(mode, packageName,
 					_itemGroupId, _startNum, _endNum, _itemType);
 

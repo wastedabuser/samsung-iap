@@ -26,6 +26,10 @@ public class InAppPaymentActivity extends Activity {
 	protected void onActivityResult(int _requestCode, int _resultCode,
 			Intent _intent) {
 
+		InAppExtensionContext frecontext = InAppPurchase.context;
+		frecontext.sendWarning("Received requestCode: " + _requestCode
+				+ " resultCode: " + _resultCode);
+
 		if (_requestCode == 1000) {
 			if (null == _intent) {
 				return;
@@ -45,34 +49,27 @@ public class InAppPaymentActivity extends Activity {
 				itemId = extras.getString("ITEM_ID");
 				purchaseData = extras.getString("RESULT_OBJECT");
 			} else {
-				InAppPurchase.context.paymentFailed();
-				/*
-				 * InAppPurchase.context .showDialog(
-				 * getString(R.string.dlg_title_payment_error),
-				 * getString(R.string
-				 * .msg_payment_was_not_processed_successfully));
-				 */
+				frecontext.paymentFailed();
 			}
+
+			frecontext.sendWarning("Extras received: " + thirdPartyName + ";"
+					+ statusCode + ";" + errorString + ";" + itemId + ";"
+					+ purchaseData);
 
 			if (RESULT_OK == _resultCode) {
 
 				try {
-					InAppPurchase.context.sendAsyncResult("payment_completed",
+					frecontext.sendAsyncResult("payment_completed",
 							new FREIapPurchase(itemId, purchaseData,
-									errorString));
+									statusCode, errorString));
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					frecontext.sendException(e);
 				}
 
 			} else if (RESULT_CANCELED == _resultCode) {
-				InAppPurchase.context.showDialog(
-						getString(R.string.dlg_title_payment_cancelled),
-						"-itemId : " + itemId + "\n-thirdPartyName : "
-								+ thirdPartyName + "\n-statusCode : "
-								+ statusCode);
+				frecontext.paymentCanceled();
 			} else {
-				InAppPurchase.context.paymentFailed();
+				frecontext.paymentFailed();
 			}
 
 		}
