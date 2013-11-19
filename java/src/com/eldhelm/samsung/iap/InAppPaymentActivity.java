@@ -1,7 +1,5 @@
 package com.eldhelm.samsung.iap;
 
-import com.eldhelm.samsung.iap.data.FREIapPurchase;
-
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Intent;
@@ -57,15 +55,7 @@ public class InAppPaymentActivity extends Activity {
 					+ purchaseData);
 
 			if (RESULT_OK == _resultCode) {
-
-				try {
-					frecontext.sendAsyncResult("payment_completed",
-							new FREIapPurchase(itemId, purchaseData,
-									statusCode, errorString));
-				} catch (Exception e) {
-					frecontext.sendException(e);
-				}
-
+				frecontext.paymentCompleted(itemId, purchaseData, statusCode, errorString);
 			} else if (RESULT_CANCELED == _resultCode) {
 				frecontext.paymentCanceled();
 			} else {
@@ -73,7 +63,8 @@ public class InAppPaymentActivity extends Activity {
 			}
 
 		}
-
+		
+		finish();
 	}
 
 }

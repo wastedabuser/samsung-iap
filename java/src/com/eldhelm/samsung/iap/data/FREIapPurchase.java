@@ -12,7 +12,7 @@ public class FREIapPurchase extends FREObject {
 
 	public static String CLASS_NAME = "com.eldhelm.samsung.iap.data.IapPurchase";
 	
-	public FREIapPurchase(String itemId, String jsonData, int statusCode, String errorString)
+	public FREIapPurchase(String jsonData, String itemId, int statusCode, String errorString)
 			throws FRETypeMismatchException, FREInvalidObjectException,
 			FREASErrorException, FRENoSuchNameException,
 			FREWrongThreadException, IllegalStateException, FREReadOnlyException {

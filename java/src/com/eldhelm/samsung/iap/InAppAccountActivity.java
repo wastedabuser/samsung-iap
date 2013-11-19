@@ -1,17 +1,20 @@
 package com.eldhelm.samsung.iap;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
 
 public class InAppAccountActivity extends Activity {
 	
+	ProgressDialog pd;
+	
 	@Override
     public void onCreate(Bundle savedInstanceState) 
     {
 		super.onCreate(savedInstanceState);
-		
+				
 		ComponentName com = new ComponentName("com.sec.android.iap",
 				"com.sec.android.iap.activity.AccountActivity");
 		Intent intent = new Intent();
@@ -28,6 +31,8 @@ public class InAppAccountActivity extends Activity {
 				InAppPurchase.context.accountCertificationSuccessfull();
 			}
 		}
+    	
+    	finish();
 	}
 	
 }

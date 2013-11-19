@@ -42,7 +42,7 @@ public class PurchaseFunction implements FREFunction {
 
 			frecontext.getActivity().startActivity(startActivityIntent);
 		} catch (Exception e) {
-			frecontext.sendException(e);
+			frecontext.sendException(e, "purchase");
 		}
 
 		return null;

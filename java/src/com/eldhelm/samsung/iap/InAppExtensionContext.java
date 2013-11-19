@@ -13,8 +13,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
-import android.content.pm.Signature;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.content.pm.Signature;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -23,13 +23,12 @@ import android.os.IBinder;
 import com.adobe.fre.FREContext;
 import com.adobe.fre.FREFunction;
 import com.adobe.fre.FREObject;
-import com.adobe.fre.FREWrongThreadException;
 import com.eldhelm.samsung.iap.function.GetItemListFunction;
 import com.eldhelm.samsung.iap.function.GetItemsInboxFunction;
+import com.eldhelm.samsung.iap.function.GetPurchaseResultFunction;
 import com.eldhelm.samsung.iap.function.InitFunction;
 import com.eldhelm.samsung.iap.function.InitializeExtensionFunction;
 import com.eldhelm.samsung.iap.function.PurchaseFunction;
-import com.eldhelm.samsung.iap.R;
 import com.sec.android.iap.IAPConnector;
 
 public class InAppExtensionContext extends FREContext {
@@ -39,7 +38,12 @@ public class InAppExtensionContext extends FREContext {
 	static final int FLAG_INCLUDE_STOPPED_PACKAGES = 32;
 
 	public IAPConnector mIAPConnector;
-	ServiceConnection mServiceConn;
+	public ServiceConnection mServiceConn;
+
+	public String purchaseData;
+	public String itemId;
+	public int statusCode;
+	public String errorString;
 
 	@Override
 	public void dispose() {
@@ -54,6 +58,7 @@ public class InAppExtensionContext extends FREContext {
 		functions.put("getItemList", new GetItemListFunction());
 		functions.put("getItemsInbox", new GetItemsInboxFunction());
 		functions.put("purchase", new PurchaseFunction());
+		functions.put("getPurchaseResult", new GetPurchaseResultFunction());
 		return functions;
 	}
 
@@ -134,6 +139,9 @@ public class InAppExtensionContext extends FREContext {
 	}
 
 	public void bind() {
+		if (mServiceConn != null)
+			return;
+
 		sendWarning("binding");
 		mServiceConn = new ServiceConnection() {
 			@Override
@@ -194,18 +202,6 @@ public class InAppExtensionContext extends FREContext {
 						}).show();
 	}
 
-	public void showDialog(String title, String message) {
-		new AlertDialog.Builder(getActivity())
-				.setTitle(title)
-				.setMessage(message)
-				.setNegativeButton(android.R.string.cancel,
-						new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog, int id) {
-								dialog.cancel();
-							}
-						}).show();
-	}
-
 	public void accountCertificationSuccessfull() {
 		bind();
 	}
@@ -219,36 +215,44 @@ public class InAppExtensionContext extends FREContext {
 	}
 
 	public void paymentFailed() {
-		dispatchStatusEventAsync("Payment failed", "payment_failed");
+		dispatchStatusEventAsync("payment_failed", "result");
 	}
 
 	public void paymentCanceled() {
-		dispatchStatusEventAsync("Payment canceled", "payment_canceled");
-	}
-	
-	public void sendAsyncResult(String code, FREObject obj)
-			throws IllegalArgumentException, IllegalStateException,
-			FREWrongThreadException {
-		setActionScriptData(obj);
-		dispatchStatusEventAsync(code, "result");
+		dispatchStatusEventAsync("payment_canceled", "result");
 	}
 
-	public void sendException(Exception ex) {
+	public void paymentCompleted(String itemId, String purchaseData,
+			int statusCode, String errorString) {
+
+		this.itemId = itemId;
+		this.purchaseData = purchaseData;
+		this.statusCode = statusCode;
+		this.errorString = errorString;
+
+		dispatchStatusEventAsync("payment_completed", "result");
+	}
+
+	public void sendException(Exception e) {
+		sendException(e, "");
+	}
+
+	public void sendException(Exception e, String id) {
 		StringWriter sw = new StringWriter();
-		ex.printStackTrace(new PrintWriter(sw));
+		e.printStackTrace(new PrintWriter(sw));
 		String err = sw.toString();
 		try {
 			setActionScriptData(FREObject.newObject(err));
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (Exception ex) {
+			ex.printStackTrace();
 		}
-		dispatchStatusEventAsync("Snap!", "exception");
+		dispatchStatusEventAsync("Extension exception: " + id, "exception");
 	}
 
 	public void sendWarning(String msg) {
 		dispatchStatusEventAsync(msg, "warning");
 	}
-	
+
 	public void sendError(String msg) {
 		dispatchStatusEventAsync(msg, "error");
 	}

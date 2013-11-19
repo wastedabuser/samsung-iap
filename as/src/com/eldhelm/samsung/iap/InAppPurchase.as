@@ -29,7 +29,7 @@ package com.eldhelm.samsung.iap {
 			extContext = ExtensionContext.createExtensionContext("com.eldhelm.samsung.iap.InAppPurchase", "");
 			if (extContext != null) {
 				trace("IAP: context created");
-				extContext.call("initializeExtension");
+				initialize();
 				extContext.addEventListener(StatusEvent.STATUS, onStatus);				
 				created = true;
 			} else {
@@ -41,10 +41,14 @@ package com.eldhelm.samsung.iap {
 			var errorObj:Object;
 			
 			if (event.level == "result") {
-				trace("IAP: result");
-				
-				dispatchEvent(new IapEvent("iapEvent_" + event.code, extContext.actionScriptData));
-				extContext.actionScriptData = null;
+				trace("IAP Extension: result " + event.code);
+				var data:*;
+				if (event.code == "payment_completed") {
+					trace("IAP: execute getPurchaseResult");
+					data = extContext.call("getPurchaseResult");
+					trace("IAP Extension: returned " + data);
+				}
+				dispatchEvent(new IapEvent("iapEvent_" + event.code, data));
 				return;
 				
 			} else if (event.level == "ready") {
@@ -63,7 +67,7 @@ package com.eldhelm.samsung.iap {
 				}
 				
 			} else if (event.level == "exception") {
-				trace("================ Extension exception ===================");
+				trace("================ " + event.code + " ===================");
 				trace(extContext.actionScriptData);
 				errorObj = { code: event.code, data: extContext.actionScriptData };
 				
@@ -88,6 +92,17 @@ package com.eldhelm.samsung.iap {
 			init();
 			
 			return false;
+		}
+		
+		/**
+		 * Initilizes the extenison. This method is called automtically when the object is created.
+		 * You could call it once again again if an exeption arises, like when the Samsung IAP plugin is not installed.
+		 */
+		public function initialize():void {
+			if (!extContext) return;
+			
+			trace("IAP: execute initialize");
+			extContext.call("initializeExtension");
 		}
 		
 		/**
@@ -158,6 +173,7 @@ package com.eldhelm.samsung.iap {
 		 */
 		public function dispose():void {
 			if (extContext != null) {
+				extContext.removeEventListener(StatusEvent.STATUS, onStatus);	
 				extContext.dispose();
 				extContext = null;
 			}
