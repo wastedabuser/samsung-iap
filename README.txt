@@ -1,4 +1,4 @@
-Ho ho ho have fun using my ANE for Samsung's IAP 2.0!
+ANE for Samsung's IAP 2.0
 
 =========================== How to use ===================================
 
@@ -15,7 +15,7 @@ Also add the following nodes to manifestAdditions in your application.xml:
 	<activity android:name="com.eldhelm.samsung.iap.InAppPaymentActivity"></activity>
 </application>
 
-The samsung API usess activities, currently i haven't found a way of doing the API callbacks without implementing those...
+The Samsung IAP API uses activities, currently i haven't found a way of doing interacting with the API without implementing activities, and they must be allowed as shown above.
 
 =========================== What's inside ================================
 
