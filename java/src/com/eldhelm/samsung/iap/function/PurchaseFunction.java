@@ -27,7 +27,7 @@ public class PurchaseFunction implements FREFunction {
 			frecontext.sendException(e);
 		}
 
-		frecontext.sendWarning("Calling getItemList:" + _packageName + ";"
+		frecontext.sendWarning("Calling purchase:" + _packageName + ";"
 				+ _itemGroupId + ";" + _itemId);
 
 		try {
